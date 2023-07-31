@@ -19,7 +19,6 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, async () => {
-
     const client = new Client({
         authStrategy: new LocalAuth(),
         puppeteer: {
@@ -36,6 +35,7 @@ app.listen(port, async () => {
     });
 
     await client.initialize();
+    let isSent = false;
 
     cron.schedule('*/3 * * * * *', () => {
         fetch(URL, {
@@ -45,10 +45,9 @@ app.listen(port, async () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log("data", data);
-
-                if (data !== null) {
+                if (data !== null && !isSent) {
                     client.sendMessage(chatId!, JSON.stringify(data));
+                    isSent = true;
                 }
             })
             .catch((error) => {
