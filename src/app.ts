@@ -37,7 +37,7 @@ app.listen(port, async () => {
     await client.initialize();
     let isSent = false;
 
-    cron.schedule('*/3 * * * * *', () => {
+    cron.schedule('*/5 * * * * *', () => {
         fetch(URL, {
             headers: {
                 'Authorization': `Bearer ${BEARER_TOKEN}`
@@ -45,6 +45,8 @@ app.listen(port, async () => {
         })
             .then((response) => response.json())
             .then((data) => {
+                console.log("data", data);
+
                 if (data !== null && !isSent) {
                     client.sendMessage(chatId!, JSON.stringify(data));
                     isSent = true;
