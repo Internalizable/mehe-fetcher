@@ -3,7 +3,7 @@ import {Client, LocalAuth} from "whatsapp-web.js";
 import cron from "node-cron";
 import dotenv from 'dotenv';
 import qrcode from 'qrcode-terminal'
-import fetch from "node-fetch";
+import fetch from 'node-fetch';
 
 dotenv.config();
 
