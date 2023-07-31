@@ -1,5 +1,5 @@
 import express from 'express';
-import {Client, LocalAuth} from "whatsapp-web.js";
+import {Client, LocalAuth, MessageMedia} from "whatsapp-web.js";
 import cron from "node-cron";
 import dotenv from 'dotenv';
 import qrcode from 'qrcode-terminal'
@@ -35,8 +35,11 @@ app.listen(port, async () => {
     });
 
     await client.initialize();
-    let isSent = false;
 
+    const media = await MessageMedia.fromUrl('https://repository-images.githubusercontent.com/171072967/f0240000-b107-11ea-8c2e-02755c9b1505');
+    await client.sendMessage(chatId!, media, {caption: "👋 MEHE FETCHER BOT - LIVE ✅"});
+
+    let isSent = false;
     cron.schedule('*/5 * * * * *', () => {
         fetch(URL, {
             headers: {
