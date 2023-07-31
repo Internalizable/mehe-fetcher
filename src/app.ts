@@ -36,7 +36,7 @@ app.listen(port, async () => {
 
     await client.initialize();
 
-    const media = await MessageMedia.fromUrl('https://repository-images.githubusercontent.com/171072967/f0240000-b107-11ea-8c2e-02755c9b1505');
+    const media = await MessageMedia.fromUrl('https://i.imgur.com/KJqdCFX.png');
     await client.sendMessage(chatId!, media, {caption: "👋 MEHE FETCHER BOT - LIVE ✅"});
 
     let isSent = false;
