@@ -14,9 +14,8 @@ const baseChatId = process.env.GROUP_CHAT_ID;
 const familyGroupId = process.env.FAMILY_GROUP_CHAT_ID;
 
 const URLs =
-    ['https://mobile.mehe.gov.lb:81/Candidate/get?lang=2&year=2023&sectionCode=SG&sessionCode=NM&candidateNumber=90192',
-        'https://mobile.mehe.gov.lb:81/Candidate/get?lang=2&year=2023&sectionCode=SE&sessionCode=NM&candidateNumber=90800'];
-const chatIds = [baseChatId, familyGroupId];
+    ['https://mobile.mehe.gov.lb:81/Candidate/get?lang=2&year=2023&sectionCode=SG&sessionCode=NM&candidateNumber=90192'];
+const chatIds = [baseChatId];
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
@@ -43,7 +42,7 @@ app.listen(port, async () => {
     const media = await MessageMedia.fromUrl('https://i.imgur.com/KJqdCFX.png');
 
     for (const chatId of chatIds) {
-        await client.sendMessage(chatId!, media, {caption: "👋 MEHE FETCHER BOT - LIVE ✅\nCurrently listening on 90192 and 90800"});
+        await client.sendMessage(chatId!, media, {caption: "👋 MEHE FETCHER BOT - LIVE ✅\nCurrently listening on 90192"});
     }
 
     cron.schedule('*/3 * * * * *', () => {
