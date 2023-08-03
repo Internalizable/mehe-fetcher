@@ -11,11 +11,12 @@ const app = express();
 const port = process.env.PORT;
 const BEARER_TOKEN = process.env.BEARER_TOKEN;
 const baseChatId = process.env.GROUP_CHAT_ID;
-const familyGroupId = process.env.FAMILY_GROUP_CHAT_ID;
+const secondaryGroupId = process.env.FAMILY_GROUP_CHAT_ID;
 
 const URLs =
-    ['https://mobile.mehe.gov.lb:81/Candidate/get?lang=2&year=2023&sectionCode=SG&sessionCode=NM&candidateNumber=90192'];
-const chatIds = [baseChatId];
+    ['https://mobile.mehe.gov.lb:81/Candidate/get?lang=2&year=2023&sectionCode=SG&sessionCode=NM&candidateNumber=90192',
+        'https://mobile.mehe.gov.lb:81/Candidate/get?lang=2&year=2023&sectionCode=SV&sessionCode=NM&candidateNumber=90437'];
+const chatIds = [baseChatId, secondaryGroupId];
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
@@ -42,7 +43,7 @@ app.listen(port, async () => {
     const media = await MessageMedia.fromUrl('https://i.imgur.com/KJqdCFX.png');
 
     for (const chatId of chatIds) {
-        await client.sendMessage(chatId!, media, {caption: "👋 MEHE FETCHER BOT - LIVE ✅\nCurrently listening on 90192"});
+        await client.sendMessage(chatId!, media, {caption: "👋 MEHE FETCHER BOT - LIVE ✅\nCurrently listening..."});
     }
 
     cron.schedule('*/3 * * * * *', () => {
@@ -55,11 +56,16 @@ app.listen(port, async () => {
                 .then((response) => response.json())
                 .then((data) => {
                     console.log("data_" + url, data);
+                    console.log("endsWith_" + url, url.endsWith("90192"));
 
-                    if (data !== null) {
-                        chatIds.forEach(chatId => {
-                            client.sendMessage(chatId!, JSON.stringify(data));
-                        })
+                    if(url.endsWith("90192")) {
+                        if (data !== null) {
+                            client.sendMessage(baseChatId!, JSON.stringify(data));
+                        }
+                    } else {
+                        if (data !== null) {
+                            client.sendMessage(secondaryGroupId!, JSON.stringify(data));
+                        }
                     }
                 })
                 .catch((error) => {
